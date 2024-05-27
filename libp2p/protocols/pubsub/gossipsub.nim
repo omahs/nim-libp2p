@@ -406,7 +406,8 @@ proc validateAndRelay(g: GossipSub,
     # IDontWant is only worth it if the message is substantially
     # bigger than the messageId
     if msg.data.len > msgId.len * 10:
-      g.broadcast(toSendPeers, RPCMsg(control: some(ControlMessage(
+      let peersToSendIDontWant = toSendPeers.toSeq.filterIt(it.codec  == GossipSubCodec_12)
+      g.broadcast(peersToSendIDontWant, RPCMsg(control: some(ControlMessage(
           idontwant: @[ControlIWant(messageIDs: @[msgId])]
         ))), isHighPriority = true)
 
