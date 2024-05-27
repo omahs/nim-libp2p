@@ -913,14 +913,14 @@ suite "GossipSub":
     gossip3.broadcast(gossip3.mesh["foobar"], RPCMsg(control: some(ControlMessage(
       idontwant: @[ControlIWant(messageIDs: @[newSeq[byte](10)])]
     ))), isHighPriority = true)
-    checkUntilTimeout: gossip2.mesh.getOrDefault("foobar").anyIt(it.heDontWants[^1].len == 1)
+    checkUntilTimeout: gossip2.mesh.getOrDefault("foobar").anyIt(it.iDontWants[^1].len == 1)
 
     tryPublish await nodes[0].publish("foobar", newSeq[byte](10000)), 1
 
     await bFinished
 
-    checkUntilTimeout: toSeq(gossip3.mesh.getOrDefault("foobar")).anyIt(it.heDontWants[^1].len == 1)
-    check: toSeq(gossip1.mesh.getOrDefault("foobar")).anyIt(it.heDontWants[^1].len == 0)
+    checkUntilTimeout: toSeq(gossip3.mesh.getOrDefault("foobar")).anyIt(it.iDontWants[^1].len == 1)
+    check: toSeq(gossip1.mesh.getOrDefault("foobar")).anyIt(it.iDontWants[^1].len == 0)
 
     await allFuturesThrowing(
       nodes[0].switch.stop(),
